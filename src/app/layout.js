@@ -1,17 +1,13 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import {Montserrat_Underline  } from "next/font/google";
 import "./globals.css";
 import Header from "@/Compenets/Header";
 import Footer from "@/Compenets/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geistSans = Montserrat_Underline({
   subsets: ["latin"],
+  variable: "--Montserrat_Underline",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: "Create Next App",
@@ -20,9 +16,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable}  antialiased`}
       >
         <Header/>
         {children}
