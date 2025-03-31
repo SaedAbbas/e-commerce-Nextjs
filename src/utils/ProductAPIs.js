@@ -5,7 +5,7 @@ const getLatestProducts = () => {
 };
 
 const getProductById = (id) => {
-  return axiosClient.get(`/products/${id}?populate=*`);
+  return axiosClient.get(`/products?filters[id][$eq]=${id}&populate=*`)
 };
 
 export default {

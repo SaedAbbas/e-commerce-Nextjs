@@ -4,22 +4,19 @@ import React, { useEffect, useState } from 'react'
 
 const ProductDetails = ({params}) => {
 
-    const[productDetails, setProductDetails] = useState({});
-    const resolvedParams = React.use(params)
-
+    const newParam = React.use(params)
     const getProductDetails = () => {
-        ProductAPIs.getProductById(resolvedParams.productID).then((res) => {
-            console.log(res)
-            // setProductDetails(res.data.data);
+        ProductAPIs.getProductById(newParam.productID).then((res) => {
+            console.log(res.data.data)
         })
     }
     useEffect(() => {
         getProductDetails();
-    },[])
+    },[newParam.productID])
 
   return (
     <div>
-        {params.productID}
+        {newParam.productID}
     </div>
   )
 }
