@@ -1,15 +1,14 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const Header = () => {
   return (
     <header className="border-b-2 border-amber-50 bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-6 sm:px-8 lg:px-10">
-        {/* Logo */}
-        <a className="block text-teal-600 hover:scale-110 transition-transform duration-300" href="#">
-          <span className="sr-only">Home</span>
-          <Image src='/logo.svg'  width={35} height={35} alt='logo' className='transition-all duration-300 hover:brightness-110' />
-        </a>
+          <Link href="/">
+            <Image src='/logo.svg'  width={35} height={35} alt='logo' className='transition-all duration-300 hover:brightness-110' />
+          </Link>
 
         <div className="flex flex-1 items-center justify-end md:justify-between">
           {/* Navigation */}
