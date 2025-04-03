@@ -8,9 +8,6 @@
   --secondary: #f81ce5;
   --accent: #7928ca;
 }
-body {
-  @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white;
-}
 
 @theme inline {
   --color-background: var(--background);

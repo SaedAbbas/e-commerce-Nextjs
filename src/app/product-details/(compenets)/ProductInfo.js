@@ -1,19 +1,20 @@
-import React from 'react'
+import React from 'react';
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { GoVerified } from "react-icons/go";
+import SkeltonProduct from '@/Compenets/SkeltonProduct';
 
 const ProductInfo = ({ productDetails }) => {
-  return (
+  return productDetails?.id ? (
     <div className="col-span-1 w-full max-md:flex max-md:flex-col max-md:items-center max-md:my-4">
       <h1 className="text-2xl font-semibold my-4 text-gray-800">{productDetails.title}</h1>
       <h3 className="text-xl text-gray-600">{productDetails.category}</h3>
       <p className="text-gray-500 max-md:text-center max-md:px-4 mt-2">{productDetails.description}</p>
-      
+
       <div className="flex items-center text-3xl mt-4">
-        {!productDetails.instantDelivery ? (
+        {productDetails.instantDelivery ? (
           <>
             <RiVerifiedBadgeFill className="text-green-500 mr-2 text-3xl" />
-            <h3 className="text-sm font-bold my-4">eligible for instant</h3>
+            <h3 className="text-sm font-bold my-4">Eligible for Instant Delivery</h3>
           </>
         ) : (
           <GoVerified className="text-gray-500" />
@@ -27,7 +28,7 @@ const ProductInfo = ({ productDetails }) => {
         </button>
       </div>
     </div>
-  )
-}
+  ):<SkeltonProduct />;
+};
 
 export default ProductInfo;

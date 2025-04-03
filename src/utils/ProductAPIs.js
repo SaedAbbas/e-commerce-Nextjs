@@ -1,14 +1,14 @@
 const { default: axiosClient } = require("./axiosClient");
 
 const getLatestProducts = () => {
-  return axiosClient.get("/products?populate=*");
+  return axiosClient.get("/api/products?populate=*");
 };
 
 const getProductById = (id) => {
-  return axiosClient.get(`/products?filters[id][$eq]=${id}&populate=*`)
+  return axiosClient.get(`/api/products?filters[id][$eq]=${id}&populate=*`)
 };
 const getProductsByCategory = (catName) => {
-  return axiosClient.get(`/products?filters[category][$eq]=${catName}&populate=*`)
+  return axiosClient.get(`/api/products?filters[category][$eq]=${catName}&populate=*`)
 };
 
 export default {
