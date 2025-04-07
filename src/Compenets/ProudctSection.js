@@ -13,6 +13,7 @@ const ProudctSection = () => {
   const getLatestProducts = () => {
     ProductAPIs.getLatestProducts().then((res) => {
       setProducts(res.data.data);
+      console.log(res)
     });
   };
 

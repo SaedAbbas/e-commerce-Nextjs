@@ -30,19 +30,19 @@ const Header = () => {
           {/* Buttons */}
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
-              <a
+              <Link
                 className="block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-700 active:scale-95"
-                href="#"
+                href="/login"
               >
                 Login
-              </a>
+              </Link>
 
-              <a
-                className="hidden rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600 transition-all duration-300 hover:bg-gray-100 hover:text-gray-900 active:scale-95 sm:block"
-                href="#"
+              <Link
+                className="hidden rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600 transition-all duration-300 bg-white hover:text-gray-700 active:scale-95 sm:block"
+                href="/register"
               >
                 Register
-              </a>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}

@@ -2,7 +2,7 @@
 import BreadCrumb from "@/Compenets/BreadCrumb";
 import ProductAPIs from "@/utils/ProductAPIs";
 import React, { useEffect, useState } from "react";
-import ProductInfo from "../(compenets)/ProductInfo";
+import ProductInfo from "../_compenets/ProductInfo";
 import Image from "next/image";
 import ProductItem from "@/Compenets/ProductItem";
 import { usePathname } from "next/navigation";
@@ -15,7 +15,7 @@ const ProductDetails = ({ params }) => {
   const path = usePathname();
 
   const newParam = React.use(params);
-
+    
   const getProductDetails = () => {
     ProductAPIs.getProductById(newParam.productID).then((res) => {
       setProductDetails(res?.data?.data[0]);

@@ -1,14 +1,13 @@
 import axios from "axios";
 
-const apiKey = process.env.NEXT_PUBLIC_REST_API_KEY;
-const apiUrl = process.env.STRABI_API_TOKEN;
-console.log('saed',apiUrl);
-
+const apiKey = process.env.NEXT_PUBLIC_STRAPI_TOKEN;
+const apiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL;
+  
 
 const axiosClient = axios.create({
   baseURL: apiUrl,
   headers: {
-    Authorization: `Bearer ${process.env.STRABI_API_TOKEN}`,
+    Authorization: `Bearer ${apiKey}`,
   },
   params: {
     apiKey: apiKey,
