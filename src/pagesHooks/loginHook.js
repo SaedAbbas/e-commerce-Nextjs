@@ -31,7 +31,7 @@ const LoginHook = () => {
     setLoading(true);
 
     // هنا بنستخدم هوك الداتا
-    const response = await UseInsertData('/api/auth/local', { identifier : email, password });
+    const response = await UseInsertData('/api/auth/local', { identifier:email, password });
 
     setRes(response); // حفظ النتيجة في متغير الحالة
     console.log(res)
@@ -41,14 +41,8 @@ const LoginHook = () => {
 
   useEffect(() => {
     if (loading === false && res) {
-    // هنا بنحلل الكوكي قبل ما نعرض الصفحة
-    const cookies = parse(document.cookie); // تحليل الكوكي من الوثيقة
-    const token = cookies.token;
 
-    if (token) {
-      // إذا كان التوكن موجود، اعرض الصفحة المطلوبة مباشرة أو أنقله لمكان معين
-      console.log(token)
-    }
+      console.log(res)
   }
   }, [loading,res]);
 
