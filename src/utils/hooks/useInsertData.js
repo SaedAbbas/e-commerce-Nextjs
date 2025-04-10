@@ -1,17 +1,22 @@
-import axiosClient from "../axiosClient"
+// utils/hooks/useInsertData.js
+import axiosClient from "../axiosClient";
 
-const UseInserData = async (url,params) => {
-    const Config = {
-        headers:{
-            'Content-Type': 'application/json',
-            // Authorization : `Bearer ${process.env.NEXT_PUBLIC_STRAPI_TOKEN}`,
-        },
-        // credentials : 'include', //هاي فال fetch
-        withCredentials : true, //هاي فال axios
-    }
-    const res = await axiosClient.post(url,params,Config)
-    return res
-    
-}
+const UseInsertData = async (url, params) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
 
-export default UseInserData
+      withCredentials: true, // عشان الكوكي يترسل مع الطلب
+    };
+
+    const response = await axiosClient.post(url, params, config);
+    return response.data;
+  } catch (error) {
+    console.error('Error in UseInsertData:', error.response?.data || error.message);
+    return { data: null, error: error.response?.data?.message || 'Something went wrong' };
+  }
+};
+
+export default UseInsertData;

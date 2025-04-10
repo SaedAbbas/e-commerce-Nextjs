@@ -1,52 +1,65 @@
-'use client'
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useNavigate } from 'next/navigation';
-import { parse } from 'cookie'; // لتحليل الكوكي
-import UseInsertData from '@/utils/hooks/useInsertData'; // هوك الإدخال
+// pagesHooks/loginHook.js
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import UseInsertData from '@/utils/hooks/useInsertData';
 
 const LoginHook = () => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [res, setRes] = useState(null); // لحفظ نتيجة الرد من السيرفر
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
+    setError(null); // إزالة الخطأ لما المستخدم يعدل الحقول
   };
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);
+    setError(null);
   };
 
-  const OnSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (email === '' || password === '') {
-      console.log('الرجاء أكمل البيانات', 'warn');
+    if (!email || !password) {
+      setError('Please fill in all fields');
       return;
     }
 
     setLoading(true);
+    setError(null);
 
-    // هنا بنستخدم هوك الداتا
-    const response = await UseInsertData('/api/auth/local', { identifier:email, password });
+    const response = await UseInsertData('/api/auth/local', {
+      identifier: email,
+      password,
+    });
 
-    setRes(response); // حفظ النتيجة في متغير الحالة
-    console.log(res)
     setLoading(false);
+
+    if (response.error) {
+      setError(response.error);
+      return;
+    }
+
+    // الاستجابة من Strapi المفروض ترجع { user: {...} } بس
+    // الكوكي (jwt) هيترسل تلقائيًا في الـ Headers
+    setSuccess(response);
   };
 
-
+  // التوجيه بعد تسجيل الدخول الناجح
   useEffect(() => {
-    if (loading === false && res) {
+    if (success) {
+      console.log(success);
+      // هنا ممكن تضيف أي توجيه تاني بعد تسجيل الدخول الناجح
+      // router.push('/'); // أو أي صفحة بعد تسجيل الدخول
+    }
+  }, [success, router]);
 
-      console.log(res)
-  }
-  }, [loading,res]);
-
-  return [email, password, loading, onChangeEmail, onChangePassword, OnSubmit];
+  return [email, password, loading, error, onChangeEmail, onChangePassword, onSubmit];
 };
 
 export default LoginHook;

@@ -4,7 +4,7 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <header className="border-b-2 border-amber-50 bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
+    <header className="border-b-2 sticky top-0 z-10 border-amber-50 bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-6 sm:px-8 lg:px-10">
           <Link href="/">
             <Image src='/logo.svg'  width={35} height={35} alt='logo' className='transition-all duration-300 hover:brightness-110' />
