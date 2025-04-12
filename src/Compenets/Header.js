@@ -1,13 +1,15 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Header = () => {
+  const user = useSelector(state => state.user.user)
   return (
     <header className="border-b-2 sticky top-0 z-10 border-amber-50 bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-6 sm:px-8 lg:px-10">
-          <Link href="/">
-            <Image src='/logo.svg'  width={35} height={35} alt='logo' className='transition-all duration-300 hover:brightness-110' />
+          <Link href="/" className='relative w-[35px] h-[35px]'>
+            <Image src='/logo.svg' priority fill alt='logo' className='transition-all duration-300 hover:brightness-110' />
           </Link>
 
         <div className="flex flex-1 items-center justify-end md:justify-between">
@@ -29,21 +31,26 @@ const Header = () => {
 
           {/* Buttons */}
           <div className="flex items-center gap-4">
-            <div className="sm:flex sm:gap-4">
-              <Link
-                className="block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-700 active:scale-95"
-                href="/login"
-              >
-                Login
-              </Link>
+            {
+              user ? <div className="">{user.username}</div> : (
+                <div className="sm:flex sm:gap-4">
+                <Link
+                  className="block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-700 active:scale-95"
+                  href="/login"
+                >
+                  Login
+                </Link>
+  
+                <Link
+                  className="hidden rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600 transition-all duration-300 bg-white hover:text-gray-700 active:scale-95 sm:block"
+                  href="/register"
+                >
+                  Register
+                </Link>
+              </div>
+              )
+            }
 
-              <Link
-                className="hidden rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600 transition-all duration-300 bg-white hover:text-gray-700 active:scale-95 sm:block"
-                href="/register"
-              >
-                Register
-              </Link>
-            </div>
 
             {/* Mobile Menu Button */}
             <button

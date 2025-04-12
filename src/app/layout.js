@@ -2,6 +2,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/Compenets/Header";
 import Footer from "@/Compenets/Footer";
+import ReduxProvider from "@/Redux/ReduxProvider";
 
 // استدعاء الخط بشكل صحيح
 const montserrat = Montserrat({
@@ -20,9 +21,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${montserrat.variable} antialiased`}>
-        <Header />
-        {children}
-        {/* <Footer /> */}
+        <ReduxProvider>
+          <Header />
+          {children}
+          {/* <Footer /> */}
+        </ReduxProvider>
       </body>
     </html>
   );

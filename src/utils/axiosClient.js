@@ -9,9 +9,7 @@ const axiosClient = axios.create({
   headers: {
     Authorization: `Bearer ${apiKey}`,
   },
-  params: {
-    apiKey: apiKey,
-  },
+
 });
 
 export default axiosClient;

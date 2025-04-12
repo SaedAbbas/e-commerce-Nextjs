@@ -1,8 +1,10 @@
 // pagesHooks/loginHook.js
-'use client';
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import UseInsertData from '@/utils/hooks/useInsertData';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/Redux/slices/userSlice';
 
 const LoginHook = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +13,8 @@ const LoginHook = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+
+  const dispatch = useDispatch()
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -38,6 +42,10 @@ const LoginHook = () => {
       password,
     });
 
+    if(response?.user){
+      dispatch(setUser(response.user))
+    }
+
     setLoading(false);
 
     if (response.error) {
@@ -47,15 +55,13 @@ const LoginHook = () => {
 
     // الاستجابة من Strapi المفروض ترجع { user: {...} } بس
     // الكوكي (jwt) هيترسل تلقائيًا في الـ Headers
-    setSuccess(response);
+    setSuccess(true);
   };
 
   // التوجيه بعد تسجيل الدخول الناجح
   useEffect(() => {
     if (success) {
-      console.log(success);
-      // هنا ممكن تضيف أي توجيه تاني بعد تسجيل الدخول الناجح
-      // router.push('/'); // أو أي صفحة بعد تسجيل الدخول
+      router.push('/'); // أو أي صفحة بعد تسجيل الدخول
     }
   }, [success, router]);
 
