@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import UseInsertData from '@/utils/hooks/useInsertData';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '@/Redux/slices/userSlice';
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 const LoginHook = () => {
   const [email, setEmail] = useState('');

@@ -1,4 +1,3 @@
-// app/login/page.js
 'use client';
 import LoginHook from '@/pagesHooks/loginHook';
 import Link from 'next/link';

@@ -48,7 +48,7 @@ const {handleLogOut,user} = HeaderHook()
                 </span>
                 <button
                   onClick={handleLogOut}
-                  className="rounded-md bg-red-500 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-red-600 active:scale-95 transition-all duration-200"
+                  className="rounded-md cursor-pointer bg-red-500 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-red-600 active:scale-95 transition-all duration-200"
                 >
                   Logout
                 </button>
