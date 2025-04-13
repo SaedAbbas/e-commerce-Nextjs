@@ -2,7 +2,6 @@
 module.exports = {
     content: [
       "./src/app/**/*.{js,ts,jsx,tsx}",
-      "./pages/**/*.{js,ts,jsx,tsx}",
       "./components/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
@@ -10,7 +9,10 @@ module.exports = {
         color : {
             primary : '#10b547' ,
             secondery : '#33de6c'  
-        }
+        },
+        fontFamily: {
+          sans: ['var(--font-montserrat)'],
+        },
       },
     },
     plugins: [],

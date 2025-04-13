@@ -1,18 +1,17 @@
-// pagesHooks/loginHook.js
-
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import UseInsertData from '@/utils/hooks/useInsertData';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '@/Redux/slices/userSlice';
+import { Toaster, toast } from "sonner";
 
 const LoginHook = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
   const router = useRouter();
+  
 
   const dispatch = useDispatch()
 
@@ -44,28 +43,30 @@ const LoginHook = () => {
 
     if(response?.user){
       dispatch(setUser(response.user))
+      router.push('/');
+      toast.success('تم تسجيل الدخول بنجاح! 🎉');
     }
 
     setLoading(false);
 
-    if (response.error) {
-      setError(response.error);
+    if (!response || response.error) {
+      setError(response?.error?.message || 'Login failed, please try again');
       return;
     }
+    
 
-    // الاستجابة من Strapi المفروض ترجع { user: {...} } بس
-    // الكوكي (jwt) هيترسل تلقائيًا في الـ Headers
-    setSuccess(true);
   };
 
-  // التوجيه بعد تسجيل الدخول الناجح
-  useEffect(() => {
-    if (success) {
-      router.push('/'); // أو أي صفحة بعد تسجيل الدخول
-    }
-  }, [success, router]);
+  const user = useSelector(state => state.user.user)
 
-  return [email, password, loading, error, onChangeEmail, onChangePassword, onSubmit];
+  useEffect(() => {
+    if (user && !loading) {
+      router.replace('/');
+    }
+  }, [user, loading, router]);
+  
+
+  return {email, password, loading, error, onChangeEmail, onChangePassword, onSubmit};
 };
 
 export default LoginHook;

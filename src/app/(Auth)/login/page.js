@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const Login = () => {
-  const [email, password, loading, error, onChangeEmail, onChangePassword, onSubmit] = LoginHook();
+  const {email, password, loading, error, onChangeEmail, onChangePassword, onSubmit} = LoginHook();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300">

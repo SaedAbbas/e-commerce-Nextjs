@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/Compenets/Header";
 import Footer from "@/Compenets/Footer";
 import ReduxProvider from "@/Redux/ReduxProvider";
+import { Toaster } from "sonner";
 
 // استدعاء الخط بشكل صحيح
 const montserrat = Montserrat({
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${montserrat.variable} antialiased`}>
+        <Toaster />
         <ReduxProvider>
           <Header />
           {children}
