@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { BiSolidCategory } from "react-icons/bi";
 import Link from "next/link";
 

@@ -57,7 +57,6 @@ const RegisterLogic = () => {
       password,
     });
 
-    if (response) console.log(response)
 
     if (response && response.user) {
       dispatch(setUser(response.user));

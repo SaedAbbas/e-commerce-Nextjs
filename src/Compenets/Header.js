@@ -2,9 +2,20 @@
 import HeaderHook from "@/pagesHooks/headerHook";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+
 const {handleLogOut,user} = HeaderHook()
+
+const [hasMounted, setHasMounted] = useState(false);
+
+useEffect(() => {
+  setHasMounted(true);
+}, []);
+
+if (!hasMounted) return null; // نمنع الريندر لحد ما نكون على الكلينت
+
   return (
     <header className="border-b-2 sticky top-0 z-10 border-amber-50 bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-6 sm:px-8 lg:px-10">
