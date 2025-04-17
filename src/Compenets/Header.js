@@ -1,20 +1,30 @@
-'use client';
+"use client";
 import HeaderHook from "@/pagesHooks/headerHook";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const Header = () => {
+  const { handleLogOut, user } = HeaderHook();
 
-const {handleLogOut,user} = HeaderHook()
+  const [hasMounted, setHasMounted] = useState(false);
 
-const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
-useEffect(() => {
-  setHasMounted(true);
-}, []);
-
-if (!hasMounted) return null; // نمنع الريندر لحد ما نكون على الكلينت
+  if (!hasMounted) return null; // نمنع الريندر لحد ما نكون على الكلينت
 
   return (
     <header className="border-b-2 sticky top-0 z-10 border-amber-50 bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
@@ -57,12 +67,24 @@ if (!hasMounted) return null; // نمنع الريندر لحد ما نكون ع
                 <span className="px-3 py-1 rounded-full bg-white text-sm font-semibold text-gray-700 shadow-sm border border-gray-300">
                   {user.username}
                 </span>
-                <button
-                  onClick={handleLogOut}
-                  className="rounded-md cursor-pointer bg-red-500 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-red-600 active:scale-95 transition-all duration-200"
-                >
+                <AlertDialog>
+                  <AlertDialogTrigger className="rounded-md cursor-pointer bg-red-500 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-red-600 active:scale-95 transition-all duration-200">
                   Logout
-                </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleLogOut} className='cursor-pointer'>
+                        Logout
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             ) : (
               <div className="sm:flex sm:gap-4">
