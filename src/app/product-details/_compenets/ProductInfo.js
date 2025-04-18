@@ -18,8 +18,8 @@ const ProductInfo = ({ productDetails }) => {
     try {
       await dispatch(handleAddToCart({
         userId, 
-        productId: productDetails.id, // تأكد من أن الـ productDetails موجود
-      })).unwrap();
+        productId: productDetails?.id, // تأكد من أن الـ productDetails موجود
+      })).unwrap(); // تأكد من أن الـ action يدعم الـ unwrap
       setIsAdded(true);
     } catch (error) {
       console.error('Error adding to cart:', error);

@@ -7,18 +7,18 @@ export const handleAddToCart = createAsyncThunk(
   async ({ userId, productId }, thunkAPI) => {
     try {
       // 1️⃣ نجيب الكارت الحالي
-      const cartRes = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate=products`, {
+      const cartRes = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate=*`, {
         withCredentials: true,
       });
-      console.log(cartRes)
+      console.log(cartRes.data?.data[0])
       let cartId;
 
-      if (cartRes.data?.data?.id) {
+      if (cartRes.data?.data[0]?.id) {
         // ✅ الكارت موجود
         const existingCart = cartRes.data.data[0];
         cartId = existingCart.id;
 
-        const existingProductIds = existingCart.products?.map(prod => prod.id) || [];
+        const existingProductIds = existingCart.products?.map(prod => prod.id);
 
         // ✅ لو المنتج موجود أصلًا، منضفوش تاني
         if (existingProductIds.includes(productId)) {
@@ -29,20 +29,20 @@ export const handleAddToCart = createAsyncThunk(
         const updateRes = await axiosClient.put(`/api/carts/${cartId}`, {
           data: {
             products: {
-              connect: [...existingProductIds, productId]
+                connect: [...existingProductIds, productId].map(id => ({ documentId :id }))
             }
           }
         }, {
           withCredentials: true
         });
-
+        console.log(updateRes)
         return updateRes.data.data;
 
       } else {
         // 🛒 كارت مش موجود، نعمل واحد جديد
         const newCartRes = await axiosClient.post("/api/carts", {
           data: {
-            user: userId,
+            user: [userId],
             products: {
               connect: [productId]
             }
