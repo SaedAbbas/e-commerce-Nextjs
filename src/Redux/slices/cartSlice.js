@@ -16,9 +16,9 @@ export const handleAddToCart = createAsyncThunk(
       if (cartRes.data?.data[0]?.id) {
         // ✅ الكارت موجود
         const existingCart = cartRes.data.data[0];
-        cartId = existingCart.id;
+        cartId = existingCart.documentId;
 
-        const existingProductIds = existingCart.products?.map(prod => prod.id);
+        const existingProductIds = existingCart.products?.map(prod => prod.documentId);
 
         // ✅ لو المنتج موجود أصلًا، منضفوش تاني
         if (existingProductIds.includes(productId)) {
