@@ -1,5 +1,31 @@
 import axiosClient from "@/utils/axiosClient";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "sonner";
+
+
+export const fetchCartItems = createAsyncThunk(
+    'cart/fetchCartItems',
+    async (userId, thunkAPI) => {
+      try {
+        const res = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate=*`, {
+          withCredentials: true,
+        });
+  
+        const existingCart = res.data?.data[0];
+  
+        if (existingCart) {
+          return existingCart.products;
+        } else {
+          return [];
+        }
+      } catch (error) {
+        console.error("❌ Error fetching cart items:", error);
+        return thunkAPI.rejectWithValue(error.response?.data || "حدث خطأ غير متوقع");
+      }
+    }
+  );
+  
+
 
 // ✅ ثنك لإضافة منتج للكارت
 export const handleAddToCart = createAsyncThunk(
@@ -10,7 +36,7 @@ export const handleAddToCart = createAsyncThunk(
       const cartRes = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate=*`, {
         withCredentials: true,
       });
-      console.log(cartRes.data?.data[0])
+      // console.log(cartRes.data?.data[0])
       let cartId;
 
       if (cartRes.data?.data[0]?.id) {
@@ -22,7 +48,8 @@ export const handleAddToCart = createAsyncThunk(
 
         // ✅ لو المنتج موجود أصلًا، منضفوش تاني
         if (existingProductIds.includes(productId)) {
-          return existingCart;
+          toast.error("المنتج موجود بالفعل في الكارت!");
+          return thunkAPI.rejectWithValue("المنتج موجود بالفعل في الكارت!");
         }
 
         // 🆕 ضيف المنتج الجديد مع اللي قبله
@@ -35,8 +62,8 @@ export const handleAddToCart = createAsyncThunk(
         }, {
           withCredentials: true
         });
-        console.log(updateRes)
-        return updateRes.data.data;
+        // console.log(updateRes)
+        return updateRes.data.data[0];
 
       } else {
         // 🛒 كارت مش موجود، نعمل واحد جديد
@@ -51,7 +78,7 @@ export const handleAddToCart = createAsyncThunk(
           withCredentials: true
         });
 
-        return newCartRes.data.data;
+        return newCartRes.data.data[0];
       }
 
     } catch (error) {
@@ -73,13 +100,19 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+  
+  .addCase(fetchCartItems.fulfilled, (state, action) => {
+    state.loading = false;
+    state.cartItems = action.payload;
+  })
+
       .addCase(handleAddToCart.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(handleAddToCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload?.products || [];
+        state.cartItems = action.payload?.products;
       })
       .addCase(handleAddToCart.rejected, (state, action) => {
         state.loading = false;

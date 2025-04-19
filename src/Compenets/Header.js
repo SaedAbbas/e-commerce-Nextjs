@@ -8,20 +8,25 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ShoppingCart } from "lucide-react"; // ✅ أيقونة العربة
+import Cart from "./Cart";
+
 
 const Header = () => {
-  const { handleLogOut, user } = HeaderHook();
+  const { handleLogOut, user ,userCart} = HeaderHook();
 
   const [hasMounted, setHasMounted] = useState(false);
+  // ✅ نستخدم useState عشان نعرف إذا كنا على الكلينت أو السيرفر
+  const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
+    console.log('usercart',userCart)
   }, []);
 
   if (!hasMounted) return null; // نمنع الريندر لحد ما نكون على الكلينت
@@ -63,7 +68,15 @@ const Header = () => {
           {/* معلومات المستخدم أو أزرار الدخول */}
           <div className="flex items-center gap-4">
             {user ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 relative">
+                <div className="flex cursor-pointer" onClick={() => setShowCart(!showCart)}>
+                   <ShoppingCart className="w-6 h-6 text-blue-700 group-hover:text-blue-600 transition-colors duration-300" />
+                    <span>({userCart?.length || 0})</span>
+                    {showCart && (
+                      <Cart userCart= {userCart}/>
+                      )
+                    }
+                </div>
                 <span className="px-3 py-1 rounded-full bg-white text-sm font-semibold text-gray-700 shadow-sm border border-gray-300">
                   {user.username}
                 </span>

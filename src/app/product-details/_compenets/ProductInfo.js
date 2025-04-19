@@ -1,19 +1,24 @@
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { GoVerified } from "react-icons/go";
 import SkeltonProduct from '@/Compenets/SkeltonProduct';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleAddToCart } from '@/Redux/slices/cartSlice'; // تأكد من مكان استيراد الـ action
+import { fetchCartItems, handleAddToCart } from '@/Redux/slices/cartSlice'; // تأكد من مكان استيراد الـ action
+import { toast } from 'sonner';
 
 const ProductInfo = ({ productDetails }) => {
   const dispatch = useDispatch();
-  
+
   const [isAdded, setIsAdded] = useState(false);  // حالة لمعرفة إذا تم إضافة المنتج
   const [loading, setLoading] = useState(false);   // حالة لعرض الـ loading أثناء إضافة المنتج
 
-  const userId = useSelector((state) => state.user.user.id); // تأكد من أن الـ user موجود في الـ Redux store
+  const userId = useSelector((state) => state.user?.user?.id); // تأكد من أن الـ user موجود في الـ Redux store
 
   const handleeAddToCart = async () => {
+    if(!userId) {
+      toast.error('يجب تسجيل الدخول لإضافة المنتج للعربة!');
+      return;
+    }
     setLoading(true);
     try {
       await dispatch(handleAddToCart({
@@ -21,6 +26,8 @@ const ProductInfo = ({ productDetails }) => {
         productId: productDetails?.documentId, // تأكد من أن الـ productDetails موجود
       })).unwrap(); // تأكد من أن الـ action يدعم الـ unwrap
       setIsAdded(true);
+       dispatch(fetchCartItems(userId)); // تحديث الـ cart بعد إضافة المنتج
+      toast.success('تمت اضافة المنتج للعربة بنجاح!')
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
@@ -56,11 +63,6 @@ const ProductInfo = ({ productDetails }) => {
           {loading ? "Adding..." : "Add to Cart"}
         </button>
       </div>
-
-      {/* رسالة نجاح بعد إضافة المنتج */}
-      {isAdded && !loading && (
-        <p className="mt-4 text-green-500">✅ تم إضافة المنتج إلى العربة بنجاح!</p>
-      )}
     </div>
   ) : <SkeltonProduct />;
 };
