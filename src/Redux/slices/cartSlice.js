@@ -2,12 +2,11 @@ import axiosClient from "@/utils/axiosClient";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "sonner";
 
-
 export const fetchCartItems = createAsyncThunk(
     'cart/fetchCartItems',
     async (userId, thunkAPI) => {
       try {
-        const res = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate=*`, {
+        const res = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate[products][populate][0]=banner`, {
           withCredentials: true,
         });
   
@@ -23,36 +22,28 @@ export const fetchCartItems = createAsyncThunk(
         return thunkAPI.rejectWithValue(error.response?.data || "حدث خطأ غير متوقع");
       }
     }
-  );
-  
+);
 
-
-// ✅ ثنك لإضافة منتج للكارت
 export const handleAddToCart = createAsyncThunk(
   'cart/handleAddToCart',
   async ({ userId, productId }, thunkAPI) => {
     try {
-      // 1️⃣ نجيب الكارت الحالي
-      const cartRes = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate=*`, {
+      const cartRes = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate[products][populate][0]=banner`, {
         withCredentials: true,
       });
-      // console.log(cartRes.data?.data[0])
       let cartId;
 
       if (cartRes.data?.data[0]?.id) {
-        // ✅ الكارت موجود
         const existingCart = cartRes.data.data[0];
         cartId = existingCart.documentId;
 
         const existingProductIds = existingCart.products?.map(prod => prod.documentId);
 
-        // ✅ لو المنتج موجود أصلًا، منضفوش تاني
         if (existingProductIds.includes(productId)) {
           toast.error("المنتج موجود بالفعل في الكارت!");
           return thunkAPI.rejectWithValue("المنتج موجود بالفعل في الكارت!");
         }
 
-        // 🆕 ضيف المنتج الجديد مع اللي قبله
         const updateRes = await axiosClient.put(`/api/carts/${cartId}`, {
           data: {
             products: {
@@ -62,11 +53,10 @@ export const handleAddToCart = createAsyncThunk(
         }, {
           withCredentials: true
         });
-        // console.log(updateRes)
+
         return updateRes.data.data[0];
 
       } else {
-        // 🛒 كارت مش موجود، نعمل واحد جديد
         const newCartRes = await axiosClient.post("/api/carts", {
           data: {
             user: [userId],
@@ -78,11 +68,57 @@ export const handleAddToCart = createAsyncThunk(
           withCredentials: true
         });
 
-        return newCartRes.data.data[0];
+        return newCartRes.data.data[0].products;
       }
 
     } catch (error) {
       console.error("❌ Error adding to cart:", error);
+      return thunkAPI.rejectWithValue(error.response?.data || "حدث خطأ غير متوقع");
+    }
+  }
+);
+
+export const handleRemoveFromCart = createAsyncThunk(
+  'cart/handleRemoveFromCart',
+  async ({ userId, productId }, thunkAPI) => {
+    try {
+      const cartRes = await axiosClient.get(`/api/carts?filters[user][id][$eq]=${userId}&populate[products][populate][0]=banner`, {
+        withCredentials: true,
+      });
+
+      if (!cartRes.data?.data[0]?.id) {
+        toast.error("الكارت غير موجود!");
+        return thunkAPI.rejectWithValue("الكارت غير موجود!");
+      }
+
+      const existingCart = cartRes.data.data[0];
+      const cartId = existingCart.documentId;
+      const existingProductIds = existingCart.products?.map(prod => prod.documentId);
+
+      if (!existingProductIds.includes(productId)) {
+        toast.error("المنتج غير موجود في الكارت!");
+        return thunkAPI.rejectWithValue("المنتج غير موجود في الكارت!");
+      }
+
+      const updatedProductIds = existingProductIds.filter(id => id !== productId);
+
+      const updateRes = await axiosClient.put(`/api/carts/${cartId}`, {
+        data: {
+          products: {
+            set: updatedProductIds.map(id => ({ documentId: id }))
+          }
+        }
+      }, {
+        withCredentials: true
+      });
+      if(updateRes) 
+console.log(updateRes.data?.data[0])
+      
+
+      return updateRes?.data?.data[0]?.products;
+
+    } catch (error) {
+      console.error("❌ Error removing from cart:", error);
       return thunkAPI.rejectWithValue(error.response?.data || "حدث خطأ غير متوقع");
     }
   }
@@ -100,21 +136,31 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-  
-  .addCase(fetchCartItems.fulfilled, (state, action) => {
-    state.loading = false;
-    state.cartItems = action.payload;
-  })
-
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cartItems = action.payload;
+      })
       .addCase(handleAddToCart.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(handleAddToCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload?.products;
+        state.cartItems = action.payload;
       })
       .addCase(handleAddToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(handleRemoveFromCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(handleRemoveFromCart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cartItems = action.payload;
+      })
+      .addCase(handleRemoveFromCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       }),

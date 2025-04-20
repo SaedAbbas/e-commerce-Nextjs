@@ -9,7 +9,6 @@ import { toast } from 'sonner';
 const ProductInfo = ({ productDetails }) => {
   const dispatch = useDispatch();
 
-  const [isAdded, setIsAdded] = useState(false);  // حالة لمعرفة إذا تم إضافة المنتج
   const [loading, setLoading] = useState(false);   // حالة لعرض الـ loading أثناء إضافة المنتج
 
   const userId = useSelector((state) => state.user?.user?.id); // تأكد من أن الـ user موجود في الـ Redux store
@@ -25,7 +24,6 @@ const ProductInfo = ({ productDetails }) => {
         userId, 
         productId: productDetails?.documentId, // تأكد من أن الـ productDetails موجود
       })).unwrap(); // تأكد من أن الـ action يدعم الـ unwrap
-      setIsAdded(true);
        dispatch(fetchCartItems(userId)); // تحديث الـ cart بعد إضافة المنتج
       toast.success('تمت اضافة المنتج للعربة بنجاح!')
     } catch (error) {
