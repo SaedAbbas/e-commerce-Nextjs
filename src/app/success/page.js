@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
 import { handleRemoveFromCart, fetchCartItems } from "@/Redux/slices/cartSlice";
@@ -18,7 +18,6 @@ export default function Success() {
 
   const subtotal = userCart?.reduce((sum, item) => sum + item.price, 0) || 0;
 
-
   // التحقق من وجود session_id (يعني المستخدم جاي من Stripe)
   useEffect(() => {
     if (!sessionId) {
@@ -26,36 +25,53 @@ export default function Success() {
     }
   }, [sessionId, router]);
 
-  // تفريغ العربة
   useEffect(() => {
-    const clearCart = async () => {
+    const clearCartAndSendEmail = async () => {
       try {
-        await dispatch(handleOrder({email:user?.email, username:user?.username, amount:subtotal, productss:userCart})).unwrap()  
+        // 1. حفظ الطلب
+        await dispatch(handleOrder({
+          email: user?.email,
+          username: user?.username,
+          amount: subtotal,
+          productss: userCart,
+        })).unwrap();
+
+        // 2. تفريغ العربة
         for (const item of userCart) {
           await dispatch(handleRemoveFromCart({ userId: user?.id, productId: item.documentId })).unwrap();
         }
         dispatch(fetchCartItems(user?.id));
         toast.success("تم تفريغ العربة بنجاح!");
-        // إرسال بريد إلكتروني للتأكيد
-        await fetch("/api/send-confirmation-email", {
+
+        // 3. توليد كود عشوائي
+        const validationCode = Math.random().toString(36).substring(2, 8).toUpperCase(); // مثال: 3KF92Q
+
+        // 4. إرسال الإيميل
+        const res = await fetch("/api/send-confirmation-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            email: user.email,
-            validationCode: "tt226-5398x", // أو تولد كود جديد حسب الحاجة
+            email: user?.email,
+            validationCode,
           }),
         });
-        
+
+        if (!res.ok) {
+          throw new Error("فشل في إرسال إيميل التأكيد");
+        }
+
+        toast.success("📧 تم إرسال إيميل تأكيد الطلب!");
+
       } catch (error) {
-        console.error("Error clearing cart:", error);
-        toast.error("فشل في تفريغ العربة");
+        console.error("Error after payment success:", error);
+        toast.error("حدث خطأ أثناء معالجة الطلب أو إرسال الإيميل");
       }
     };
 
     if (userCart?.length > 0 && user && sessionId) {
-      clearCart();
+      clearCartAndSendEmail();
     }
-  }, [userCart, user, dispatch, sessionId]);
+  }, [userCart, user, dispatch, sessionId, subtotal]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-200 via-gray-300 to-gray-200 flex items-center justify-center p-4">
@@ -78,7 +94,7 @@ export default function Success() {
         </div>
         <h1 className="text-3xl font-bold text-gray-800 mb-4">تم الدفع بنجاح!</h1>
         <p className="text-gray-600 mb-6">
-          شكرًا لثقتك بنا! تمت معالجة دفعتك بنجاح وسيتم تأكيد طلبك قريبًا.
+          شكرًا لثقتك بنا! تمت معالجة دفعتك وسيصلك بريد تأكيد قريبًا.
         </p>
         <Link
           href="/"
