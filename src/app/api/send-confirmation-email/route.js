@@ -1,5 +1,5 @@
+import LinearLoginCodeEmail from '@/Compenets/email-template';
 import { Resend } from 'resend';
-import { LinearLoginCodeEmail } from '@/components/email-template';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
