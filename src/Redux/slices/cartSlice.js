@@ -112,10 +112,11 @@ export const handleRemoveFromCart = createAsyncThunk(
         withCredentials: true
       });
       if(updateRes) 
-console.log(updateRes.data?.data[0])
+        console.log(updateRes
+      )
       
 
-      return updateRes?.data?.data[0]?.products;
+      return updateRes?.data?.data?.products;
 
     } catch (error) {
       console.error("❌ Error removing from cart:", error);
