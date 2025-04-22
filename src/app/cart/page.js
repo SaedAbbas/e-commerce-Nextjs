@@ -152,12 +152,12 @@ const Page = () => {
             {userCart.length > 0 && (
               <div className="mt-8 flex justify-between items-center pt-6">
                 <span className="text-lg font-semibold text-gray-900">
-                  Subtotal: ${subtotal.toFixed(0)}
+                  Subtotal: ${subtotal.toFixed(2)}
                 </span>
                 <button
                   onClick={handleCheckout}
                   disabled={loading || userCart.length === 0}
-                  className={`bg-blue-600 text-white font-semibold px-4 py-2 rounded-md transition-colors duration-200 ${
+                  className={`bg-blue-600 text-white cursor-pointer font-semibold px-4 py-2 rounded-md transition-colors duration-200 ${
                     loading || userCart.length === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
                   }`}
                 >

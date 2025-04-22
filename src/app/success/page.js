@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
 import { handleRemoveFromCart, fetchCartItems } from "@/Redux/slices/cartSlice";
 import { toast } from "sonner";
+import { handleOrder } from "@/Redux/slices/orderSlice";
 
 export default function Success() {
   const user = useSelector((state) => state?.user?.user);
@@ -14,6 +15,9 @@ export default function Success() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+
+  const subtotal = userCart?.reduce((sum, item) => sum + item.price, 0) || 0;
+
 
   // التحقق من وجود session_id (يعني المستخدم جاي من Stripe)
   useEffect(() => {
@@ -26,11 +30,22 @@ export default function Success() {
   useEffect(() => {
     const clearCart = async () => {
       try {
+        await dispatch(handleOrder({email:user?.email, username:user?.username, amount:subtotal, productss:userCart})).unwrap()  
         for (const item of userCart) {
-          await dispatch(handleRemoveFromCart({ userId: user.id, productId: item.documentId })).unwrap();
+          await dispatch(handleRemoveFromCart({ userId: user?.id, productId: item.documentId })).unwrap();
         }
-        dispatch(fetchCartItems(user.id));
+        dispatch(fetchCartItems(user?.id));
         toast.success("تم تفريغ العربة بنجاح!");
+        // إرسال بريد إلكتروني للتأكيد
+        await fetch("/api/send-confirmation-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email,
+            validationCode: "tt226-5398x", // أو تولد كود جديد حسب الحاجة
+          }),
+        });
+        
       } catch (error) {
         console.error("Error clearing cart:", error);
         toast.error("فشل في تفريغ العربة");
