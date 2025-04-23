@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <ReduxProvider>
           <Header />
           {children}
-          {/* <Footer /> */}
+          <Footer />
         </ReduxProvider>
         <script src="/assets/vendor/preline/dist/preline.js" defer></script>
       </body>
