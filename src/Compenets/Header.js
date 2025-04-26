@@ -95,7 +95,28 @@ const Header = () => {
                 <span className="px-3 py-1 rounded-full bg-white text-sm font-semibold text-gray-700 shadow-sm border border-gray-300">
                   {user.username}
                 </span>
-
+                <AlertDialog>
+                  <AlertDialogTrigger className="rounded-md cursor-pointer bg-red-500 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-red-600 active:scale-95 transition-all duration-200">
+                    Logout
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleLogOut}
+                        className="cursor-pointer"
+                      >
+                        Logout
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             ) : (
               <div className="sm:flex sm:gap-4">
                 <Link
