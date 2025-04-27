@@ -24,17 +24,9 @@ export default function RootLayout({ children }) {
       <body className={`${montserrat.variable} antialiased`}>
         <Toaster />
         <ReduxProvider>
-        <p className="text-2xl font-bold text-center leading-relaxed">
-  محمود وصفاء، قصة أوشكت على النهاية 
-  <span className="text-red-500 mx-1">❤️</span>
-  <span className="text-blue-500 mx-1">💙</span>
-  وبكل حب، ستبدأ قصة جديدة بعنوان 
-  <span className="text-pink-500"> محمود وفلة</span> ✨
-</p>
-
-          {/* <Header /> */}
+          <Header />
           {children}
-          {/* <Footer /> */}
+          <Footer />
         </ReduxProvider>
         <script src="/assets/vendor/preline/dist/preline.js" defer></script>
       </body>
