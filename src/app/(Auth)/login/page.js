@@ -9,7 +9,7 @@ const Login = () => {
   //فلازم عشان ننفذ فنكشن بتشتغل عالمتصفح لازم نحط يوز كلينت
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300">
+    <div className="min-h-screen max-sm:px-8 flex items-center justify-center bg-gradient-to-r from-gray-300 via-gray-200 to-gray-300">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           👋 Welcome Back!

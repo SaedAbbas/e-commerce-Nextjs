@@ -25,7 +25,7 @@ const Hero = () => {
             </a>
 
             <a
-              className="inline-block rounded-lg border border-gray-300 px-6 py-3 text-lg font-semibold text-gray-700 shadow-md transition-all duration-300 hover:bg-gray-100 hover:text-gray-900 hover:scale-105"
+              className="inline-block bg-white rounded-lg border border-gray-300 px-6 py-3 text-lg font-semibold text-gray-700 shadow-md transition-all duration-300 hover:scale-105"
               href="#"
             >
               Learn More

@@ -8,7 +8,7 @@ const Register = () => {
   const {name, email, password, confirmPassword, loading, error,
     onChangeName, onChangeEmail, onChangePassword, onChangeConfirmPassword, onSubmit} = RegisterLogic()
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
+    <div className="min-h-screen max-sm:px-8 flex items-center justify-center bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-300">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md animate-fade-in">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           🚀 Create Your Account
