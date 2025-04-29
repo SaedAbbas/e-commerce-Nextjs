@@ -118,7 +118,7 @@ const Header = () => {
                 </AlertDialog>
               </div>
             ) : (
-              <div className="sm:flex sm:gap-4">
+              <div className="flex gap-4">
                 <Link
                   className="block rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-700 active:scale-95"
                   href="/login"
@@ -127,7 +127,7 @@ const Header = () => {
                 </Link>
 
                 <Link
-                  className="hidden rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600 transition-all duration-300 bg-white hover:text-gray-700 active:scale-95 sm:block"
+                  className=" rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-600 transition-all duration-300 bg-white hover:text-gray-700 active:scale-95 sm:block"
                   href="/register"
                 >
                   Register
