@@ -29,7 +29,7 @@ const Cart = ({ userCart }) => {
         {userCart.length === 0 ? (
           <p className="text-gray-500 text-center">Your cart is empty</p>
         ) : (
-          <ul className="space-y-3 h-80 overflow-auto ">
+          <ul className="space-y-3 h-auto pb-2 overflow-auto ">
             {userCart.map((item) => (
                 console.log('item :', item),
               <li key={item.id} className="flex items-center gap-3">
@@ -57,12 +57,6 @@ const Cart = ({ userCart }) => {
           className="block rounded bg-blue-600 text-white text-sm font-medium py-2 text-center hover:bg-blue-700"
         >
           View Cart ({userCart.length})
-        </Link>
-        <Link
-          href="/checkout"
-          className="block rounded bg-gray-600 text-white text-sm font-medium py-2 text-center hover:bg-gray-700"
-        >
-          Checkout
         </Link>
       </div>
     </div>
