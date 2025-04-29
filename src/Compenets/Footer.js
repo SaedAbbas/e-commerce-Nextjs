@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="mx-auto max-w-screen-xl px-4 pb-8 sm:px-6 lg:px-8 ">
-        <div className="mt-16 border-t border-gray-100 pt-8 sm:flex sm:items-center sm:justify-between dark:border-gray-800">
+        <div className="mt-[2px] border-t border-gray-100 pt-8 sm:flex sm:items-center sm:justify-between dark:border-gray-800">
           
           {/* روابط النصوص */}
           <ul className="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">
