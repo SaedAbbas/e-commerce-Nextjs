@@ -11,7 +11,7 @@ const ProductInfo = ({ productDetails }) => {
   const [loading, setLoading] = useState(false);
   const userId = useSelector((state) => state.user?.user?.id);
 
-  const handleAddToCart = async () => {
+  const handleeAddToCart = async () => {
     if (!userId) {
       toast.error('You must be logged in to add items to your cart.');
       return;
@@ -28,7 +28,6 @@ const ProductInfo = ({ productDetails }) => {
       toast.success('Product added to cart successfully!');
     } catch (error) {
       console.error('Error adding to cart:', error);
-      toast.error('Something went wrong.');
     } finally {
       setLoading(false);
     }
@@ -72,8 +71,8 @@ const ProductInfo = ({ productDetails }) => {
         </span>
 
         <button
-          onClick={handleAddToCart}
-          className="w-full md:w-auto px-6 py-2.5 text-white font-semibold bg-blue-600 hover:bg-blue-700 transition-all duration-200 rounded-xl shadow-sm disabled:opacity-50"
+          onClick={handleeAddToCart}
+          className="w-full cursor-pointer md:w-auto px-6 py-2.5 text-white font-semibold bg-blue-600 hover:bg-blue-700 transition-all duration-200 rounded-xl shadow-sm disabled:opacity-50"
           disabled={loading}
         >
           {loading ? 'Adding...' : 'Add to Cart'}

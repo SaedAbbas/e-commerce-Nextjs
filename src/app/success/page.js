@@ -41,7 +41,6 @@ export default function Success() {
           await dispatch(handleRemoveFromCart({ userId: user?.id, productId: item.documentId })).unwrap();
         }
         dispatch(fetchCartItems(user?.id));
-        toast.success("تم تفريغ العربة بنجاح!");
 
         // 3. توليد كود عشوائي
         const validationCode = Math.random().toString(36).substring(2, 8).toUpperCase(); // مثال: 3KF92Q
