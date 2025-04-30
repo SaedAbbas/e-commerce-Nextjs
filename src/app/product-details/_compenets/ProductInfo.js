@@ -3,66 +3,84 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { GoVerified } from "react-icons/go";
 import SkeltonProduct from '@/Compenets/SkeltonProduct';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCartItems, handleAddToCart } from '@/Redux/slices/cartSlice'; // تأكد من مكان استيراد الـ action
+import { fetchCartItems, handleAddToCart } from '@/Redux/slices/cartSlice';
 import { toast } from 'sonner';
 
 const ProductInfo = ({ productDetails }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const userId = useSelector((state) => state.user?.user?.id);
 
-  const [loading, setLoading] = useState(false);   // حالة لعرض الـ loading أثناء إضافة المنتج
-
-  const userId = useSelector((state) => state.user?.user?.id); // تأكد من أن الـ user موجود في الـ Redux store
-
-  const handleeAddToCart = async () => {
-    if(!userId) {
-      toast.error('يجب تسجيل الدخول لإضافة المنتج للعربة!');
+  const handleAddToCart = async () => {
+    if (!userId) {
+      toast.error('You must be logged in to add items to your cart.');
       return;
     }
+
     setLoading(true);
     try {
       await dispatch(handleAddToCart({
-        userId, 
-        productId: productDetails?.documentId, // تأكد من أن الـ productDetails موجود
-      })).unwrap(); // تأكد من أن الـ action يدعم الـ unwrap
-       dispatch(fetchCartItems(userId)); // تحديث الـ cart بعد إضافة المنتج
-      toast.success('تمت اضافة المنتج للعربة بنجاح!')
+        userId,
+        productId: productDetails?.documentId,
+      })).unwrap();
+
+      dispatch(fetchCartItems(userId));
+      toast.success('Product added to cart successfully!');
     } catch (error) {
       console.error('Error adding to cart:', error);
+      toast.error('Something went wrong.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  return productDetails?.id ? (
-    <div className="col-span-1 w-full max-md:flex max-md:flex-col max-md:items-center max-md:my-4">
-      <h1 className="text-2xl font-semibold my-4 text-gray-800">{productDetails.title}</h1>
-      <h3 className="text-xl text-gray-600">{productDetails.category}</h3>
-      <p className="text-gray-500 max-md:text-center max-md:px-4 mt-2">{productDetails.description}</p>
+  if (!productDetails?.id) return <SkeltonProduct />;
 
-      <div className="flex items-center text-3xl mt-4">
+  return (
+    <div className="col-span-1 pt-0 w-full max-w-2xl mx-auto p-6 rounded-2xl bg-white transition-all duration-300">
+      <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center md:text-left">
+        {productDetails.title}
+      </h1>
+
+      <h3 className="text-lg text-blue-500 font-medium text-center md:text-left">
+        {productDetails.category}
+      </h3>
+
+      <p className="text-gray-600 dark:text-gray-300 mt-3 text-sm md:text-base text-center md:text-left leading-relaxed">
+        {productDetails.description}
+      </p>
+
+      <div className="flex items-center gap-2 mt-6 text-green-600 dark:text-green-400">
         {productDetails.instantDelivery ? (
           <>
-            <RiVerifiedBadgeFill className="text-green-500 mr-2 text-3xl" />
-            <h3 className="text-sm font-bold my-4">Eligible for Instant Delivery</h3>
+            <RiVerifiedBadgeFill className="text-2xl" />
+            <span className="text-sm font-semibold uppercase tracking-wide">
+              Instant Delivery
+            </span>
           </>
         ) : (
-          <GoVerified className="text-gray-500" />
+          <div className="flex items-center gap-2 text-gray-400">
+            <GoVerified className="text-xl" />
+            <span className="text-sm">Standard Delivery</span>
+          </div>
         )}
       </div>
 
-      <div className="flex justify-between items-center max-md:flex-row-reverse max-md:gap-4 mt-4">
-        <span className="text-xl font-semibold text-gray-800">{productDetails.price} $</span>
-        
-        {/* زر إضافة للعربة */}
-        <button 
-          onClick={handleeAddToCart} 
-          className="px-4 py-2 cursor-pointer bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200"
+      <div className="flex flex-col md:flex-row justify-between items-center mt-8 gap-4">
+        <span className="text-2xl font-bold text-gray-800 dark:text-white">
+          ${productDetails.price}
+        </span>
+
+        <button
+          onClick={handleAddToCart}
+          className="w-full md:w-auto px-6 py-2.5 text-white font-semibold bg-blue-600 hover:bg-blue-700 transition-all duration-200 rounded-xl shadow-sm disabled:opacity-50"
           disabled={loading}
         >
-          {loading ? "Adding..." : "Add to Cart"}
+          {loading ? 'Adding...' : 'Add to Cart'}
         </button>
       </div>
     </div>
-  ) : <SkeltonProduct />;
+  );
 };
 
 export default ProductInfo;

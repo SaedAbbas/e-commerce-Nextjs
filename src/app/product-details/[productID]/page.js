@@ -52,7 +52,7 @@ const ProductDetails = ({ params }) => {
             priority
             width={500}
             height={300}
-            className="rounded-xl h-[300px] max-md:w-full object-cover col-span-1"
+            className="rounded-xl h-[300px] max-md:w-[calc(100%-50px)] max-md:mx-auto object-cover col-span-1"
           />
         ): (<div className="w-[500px] h-[300px] bg-slate-200 animate-pulse rounded-xl"></div>)}
         <ProductInfo productDetails={productDetails} />

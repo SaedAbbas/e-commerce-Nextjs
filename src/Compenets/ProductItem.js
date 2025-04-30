@@ -12,7 +12,7 @@ const ProductItem = ({ product }) => {
 
   return (
     <Link href={`/product-details/${product.id}`}>
-      <div className="flex flex-col justify-center max-sm:mx-12 cursor-pointer rounded-3xl bg-white dark:bg-gray-900 shadow-md hover:shadow-2xl transition-all duration-300 ease-in-out border-2 border-transparent hover:border-gradient-to-r from-blue-500 to-purple-500 hover:scale-105 p-2">
+      <div className="flex flex-col justify-center max-sm:mx-6 cursor-pointer rounded-3xl bg-white dark:bg-gray-900 shadow-md hover:shadow-2xl transition-all duration-300 ease-in-out border-2 border-transparent hover:border-gradient-to-r from-blue-500 to-purple-500 hover:scale-105 p-2">
         {product?.banner?.url && (
           <Image
             src={product.banner.url}
