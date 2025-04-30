@@ -106,10 +106,10 @@ const Header = () => {
                       </AlertDialogTitle>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel className='border-1 border-gray-300' >Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleLogOut}
-                        className="cursor-pointer"
+                        className="cursor-pointer bg-red-500 text-white text-sm font-semibold px-4 py-2 shadow-md hover:bg-red-600 active:scale-95 transition-all duration-200"
                       >
                         Logout
                       </AlertDialogAction>
