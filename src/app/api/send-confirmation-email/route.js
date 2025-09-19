@@ -9,7 +9,7 @@ export async function POST(req) {
     const { email, validationCode } = body;
 
     const { data, error } = await resend.emails.send({
-      from: 'Saeed Abbas <onboarding@resend.dev>',
+      from: 'Saed Abbas <onboarding@resend.dev>',
       to: [email],
       subject: 'سعيد يشكرك – هذا رمز تأكيدك الشخصي',
       react: LinearLoginCodeEmail({ validationCode }),
