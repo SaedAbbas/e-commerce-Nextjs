@@ -40,7 +40,6 @@ export const handleAddToCart = createAsyncThunk(
         const existingProductIds = existingCart.products?.map(prod => prod.documentId);
 
         if (existingProductIds.includes(productId)) {
-          toast.error("المنتج موجود بالفعل في الكارت!");
           return thunkAPI.rejectWithValue("المنتج موجود بالفعل في الكارت!");
         }
 
