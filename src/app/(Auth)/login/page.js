@@ -16,7 +16,7 @@ const Login = () => {
         </h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Email</label>
+            <label className="block text-gray-700 font-medium mb-1">Enter your  own Email</label>
             <input
               type="email"
               onChange={onChangeEmail}
