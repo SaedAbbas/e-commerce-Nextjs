@@ -4,7 +4,7 @@ const BreadCrumb = ({path}) => {
 
     
   return (
-    <nav aria-label="Breadcrumb" className="mb-8">
+    <nav aria-label="Breadcrumb" className="mb-6">
       <ol className="flex overflow-hidden w-fit rounded border border-gray-300 bg-white text-sm text-gray-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
         <li>
           <a
