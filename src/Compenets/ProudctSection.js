@@ -18,7 +18,7 @@ const ProudctSection = () => {
   };
 
   return (
-    <div className="mx-8 my-6">
+    <div className="mx-8 my-4">
       <h1 className="text-5xl max-sm:hidden max-sm:mx-12 flex justify-center items-center font-extrabold text-center tracking-wide bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text my-6">
         ✨ Discover Our Latest Products ✨
       </h1>
